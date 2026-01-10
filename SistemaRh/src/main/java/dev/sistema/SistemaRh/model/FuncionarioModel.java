@@ -1,6 +1,10 @@
 package dev.sistema.SistemaRh.model;
 
+import dev.sistema.SistemaRh.model.enums.HierarchialLevel;
+import dev.sistema.SistemaRh.model.enums.StatusFuncionario;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,15 +22,18 @@ public class FuncionarioModel {
     private String telefonePrimario;
     private String telefoneSegundario;
     private String cargo;
-    private String nivelHierarquico;
-    private boolean ativo;
+
+    @Enumerated(EnumType.STRING)
+    private HierarchialLevel nivelHierarquico;
+    @Enumerated(EnumType.STRING)
+    private StatusFuncionario statusFuncionario;
 
 
     public FuncionarioModel() {
     }
 
 
-    public FuncionarioModel(Long id, String nomeFuncionario, String cpf, String email, String telefonePrimario, String telefoneSegundario, String cargo, String nivelHierarquico, boolean ativo) {
+    public FuncionarioModel(Long id, String nomeFuncionario, String cpf, String email, String telefonePrimario, String telefoneSegundario, String cargo, HierarchialLevel nivelHierarquico, StatusFuncionario statusFuncionario) {
         this.id = id;
         this.nomeFuncionario = nomeFuncionario;
         this.cpf = cpf;
@@ -35,7 +42,7 @@ public class FuncionarioModel {
         this.telefoneSegundario = telefoneSegundario;
         this.cargo = cargo;
         this.nivelHierarquico = nivelHierarquico;
-        this.ativo = ativo;
+        this.statusFuncionario = statusFuncionario;
     }
 
 
@@ -95,21 +102,20 @@ public class FuncionarioModel {
         this.cargo = cargo;
     }
 
-    public String getNivelHierarquico() {
+    public HierarchialLevel getNivelHierarquico() {
         return this.nivelHierarquico;
     }
 
-    public void setNivelHierarquico(String nivelHierarquico) {
+    public void setNivelHierarquico(HierarchialLevel nivelHierarquico) {
         this.nivelHierarquico = nivelHierarquico;
     }
 
-    public boolean isAtivo() {
-        return this.ativo;
+    public StatusFuncionario getStatusFuncionario() {
+        return this.statusFuncionario;
     }
 
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
+    public void setStatusFuncionario(StatusFuncionario statusFuncionario) {
+        this.statusFuncionario = statusFuncionario;
     }
-
 
 }
