@@ -1,6 +1,6 @@
 package dev.sistema.SistemaRh.model;
 
-import dev.sistema.SistemaRh.model.enums.HierarchialLevel;
+import dev.sistema.SistemaRh.model.enums.HierarchicalLevel;
 import dev.sistema.SistemaRh.model.enums.StatusFuncionario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,7 +24,7 @@ public class FuncionarioModel {
     private String cargo;
 
     @Enumerated(EnumType.STRING)
-    private HierarchialLevel nivelHierarquico;
+    private HierarchicalLevel nivelHierarquico;
     @Enumerated(EnumType.STRING)
     private StatusFuncionario statusFuncionario;
 
@@ -33,7 +33,7 @@ public class FuncionarioModel {
     }
 
 
-    public FuncionarioModel(Long id, String nomeFuncionario, String cpf, String email, String telefonePrimario, String telefoneSegundario, String cargo, HierarchialLevel nivelHierarquico, StatusFuncionario statusFuncionario) {
+    public FuncionarioModel(Long id, String nomeFuncionario, String cpf, String email, String telefonePrimario, String telefoneSegundario, String cargo, HierarchicalLevel nivelHierarquico, StatusFuncionario statusFuncionario) {
         this.id = id;
         this.nomeFuncionario = nomeFuncionario;
         this.cpf = cpf;
@@ -102,11 +102,11 @@ public class FuncionarioModel {
         this.cargo = cargo;
     }
 
-    public HierarchialLevel getNivelHierarquico() {
+    public HierarchicalLevel getNivelHierarquico() {
         return this.nivelHierarquico;
     }
 
-    public void setNivelHierarquico(HierarchialLevel nivelHierarquico) {
+    public void setNivelHierarquico(HierarchicalLevel nivelHierarquico) {
         this.nivelHierarquico = nivelHierarquico;
     }
 

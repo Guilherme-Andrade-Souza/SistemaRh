@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import dev.sistema.SistemaRh.dto.mapper.FuncionarioDTOMapper;
+import dev.sistema.SistemaRh.dto.response.FuncionarioResponse;
 import dev.sistema.SistemaRh.model.FuncionarioModel;
 import dev.sistema.SistemaRh.repository.FuncionarioRepository;
 
@@ -11,14 +13,19 @@ import dev.sistema.SistemaRh.repository.FuncionarioRepository;
 public class FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
+    private final FuncionarioDTOMapper funcionarioDTOMapper;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, FuncionarioDTOMapper funcionarioDTOMapper) {
         this.funcionarioRepository = funcionarioRepository;
+        this.funcionarioDTOMapper = funcionarioDTOMapper;
     }
 
     //listar
-    public List<FuncionarioModel> getAll() {
-        return funcionarioRepository.findAll();
+    public List<FuncionarioResponse> getAll() {
+        return funcionarioRepository.findAll()
+            .stream()
+            .map(funcionarioDTOMapper::apply)
+            .toList();
     }
     //criar
     public FuncionarioModel save(FuncionarioModel funcionarioModel){

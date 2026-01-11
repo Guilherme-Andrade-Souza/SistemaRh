@@ -1,6 +1,6 @@
 package dev.sistema.SistemaRh.model.enums;
 
-public enum HierarchialLevel {
+public enum HierarchicalLevel {
     JOVEM_APRENDIZ,
     ESTAGIARIO,
     ASSISTENTE,

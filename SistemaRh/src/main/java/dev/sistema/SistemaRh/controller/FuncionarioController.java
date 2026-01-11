@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import dev.sistema.SistemaRh.dto.response.FuncionarioResponse;
 import dev.sistema.SistemaRh.model.FuncionarioModel;
 import dev.sistema.SistemaRh.service.FuncionarioService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public List<FuncionarioModel> getAll(){
+    public List<FuncionarioResponse> getAll(){
         return funcionarioService.getAll();
     }
     
