@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import dev.sistema.SistemaRh.dto.response.FuncionarioResponse;
 import dev.sistema.SistemaRh.model.FuncionarioModel;
 import dev.sistema.SistemaRh.service.FuncionarioService;
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -32,7 +34,7 @@ public class FuncionarioController {
     }
     
     @PostMapping    
-    public FuncionarioModel save(@RequestBody FuncionarioModel funcionarioModel){
+    public FuncionarioModel save(@RequestBody @Valid FuncionarioModel funcionarioModel){
         return funcionarioService.save(funcionarioModel);
     }
 

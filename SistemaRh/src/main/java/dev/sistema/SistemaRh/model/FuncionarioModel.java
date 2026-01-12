@@ -1,5 +1,7 @@
 package dev.sistema.SistemaRh.model;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import dev.sistema.SistemaRh.model.enums.HierarchicalLevel;
 import dev.sistema.SistemaRh.model.enums.StatusFuncionario;
 import jakarta.persistence.Entity;
@@ -8,6 +10,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 
 @Entity
 public class FuncionarioModel {
@@ -16,10 +21,20 @@ public class FuncionarioModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Para cadastro de novo colaborador deve conter nome.")
     private String nomeFuncionario;
+    
+    @NotBlank
+    @CPF
     private String cpf;
+
+    @Email
     private String email;
+
+    @NotBlank
     private String telefonePrimario;
+    
+    @NotBlank
     private String telefoneSegundario;
     private String cargo;
 
