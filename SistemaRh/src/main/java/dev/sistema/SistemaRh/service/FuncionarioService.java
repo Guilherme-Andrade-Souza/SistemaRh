@@ -34,13 +34,13 @@ public class FuncionarioService {
     }
     //criar
     public FuncionarioResponse save(FuncionarioRequest funcionarioRequest){
-    // Converte Request -> Model
+        // Converte Request -> Model
         FuncionarioModel funcionarioParaSalvar = funcionarioDTOMapperRequest.apply(funcionarioRequest);
         
         // Salva no banco (retorna um Model com ID)
         FuncionarioModel funcionarioSalvo = funcionarioRepository.save(funcionarioParaSalvar);
         
-        // CORREÇÃO: Converte Model -> Response usando o mapper de saída
+        //Converte Model -> Response usando o mapper de saída
         return funcionarioDTOMapperResponse.apply(funcionarioSalvo);
     }
     //deletar
