@@ -8,7 +8,7 @@ import dev.sistema.SistemaRh.dto.response.FuncionarioResponse;
 import dev.sistema.SistemaRh.model.FuncionarioModel;
 
 @Component
-public class FuncionarioDTOMapper implements Function<FuncionarioModel, FuncionarioResponse>{
+public class FuncionarioDTOMapperResponse implements Function<FuncionarioModel, FuncionarioResponse>{
 
     @Override
     public FuncionarioResponse apply(FuncionarioModel funcionarioModel){

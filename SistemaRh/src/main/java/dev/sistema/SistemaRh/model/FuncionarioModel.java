@@ -10,39 +10,44 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
+@Table(name = "funcionarios")
 public class FuncionarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Para cadastro de novo colaborador deve conter nome.")
+    @NotBlank
     private String nomeFuncionario;
     
     @NotBlank
     @CPF
     private String cpf;
 
+    @NotBlank
     @Email
     private String email;
 
     @NotBlank
     private String telefonePrimario;
-    
-    @NotBlank
-    private String telefoneSegundario;
-    private String cargo;
 
+    private String telefoneSegundario;
+
+    @NotBlank
+    private String cargo;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private HierarchicalLevel nivelHierarquico;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private StatusFuncionario statusFuncionario;
-
 
     public FuncionarioModel() {
     }

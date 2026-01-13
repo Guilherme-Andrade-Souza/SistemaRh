@@ -4,32 +4,44 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import dev.sistema.SistemaRh.dto.mapper.FuncionarioDTOMapper;
+import dev.sistema.SistemaRh.dto.mapper.FuncionarioDTOMapperRequest;
+import dev.sistema.SistemaRh.dto.mapper.FuncionarioDTOMapperResponse;
+import dev.sistema.SistemaRh.dto.request.FuncionarioRequest;
 import dev.sistema.SistemaRh.dto.response.FuncionarioResponse;
 import dev.sistema.SistemaRh.model.FuncionarioModel;
 import dev.sistema.SistemaRh.repository.FuncionarioRepository;
 
 @Service
 public class FuncionarioService {
-
+    
+    
     private final FuncionarioRepository funcionarioRepository;
-    private final FuncionarioDTOMapper funcionarioDTOMapper;
+    private final FuncionarioDTOMapperResponse funcionarioDTOMapperResponse;
+    private final FuncionarioDTOMapperRequest funcionarioDTOMapperRequest;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, FuncionarioDTOMapper funcionarioDTOMapper) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, FuncionarioDTOMapperResponse funcionarioDTOMapperResponse, FuncionarioDTOMapperRequest funcionarioDTOMapperRequest) {
         this.funcionarioRepository = funcionarioRepository;
-        this.funcionarioDTOMapper = funcionarioDTOMapper;
+        this.funcionarioDTOMapperResponse = funcionarioDTOMapperResponse;
+        this.funcionarioDTOMapperRequest = funcionarioDTOMapperRequest;
     }
 
     //listar
     public List<FuncionarioResponse> getAll() {
         return funcionarioRepository.findAll()
             .stream()
-            .map(funcionarioDTOMapper::apply)
+            .map(funcionarioDTOMapperResponse::apply)
             .toList();
     }
     //criar
-    public FuncionarioModel save(FuncionarioModel funcionarioModel){
-        return funcionarioRepository.save(funcionarioModel);
+    public FuncionarioResponse save(FuncionarioRequest funcionarioRequest){
+    // Converte Request -> Model
+        FuncionarioModel funcionarioParaSalvar = funcionarioDTOMapperRequest.apply(funcionarioRequest);
+        
+        // Salva no banco (retorna um Model com ID)
+        FuncionarioModel funcionarioSalvo = funcionarioRepository.save(funcionarioParaSalvar);
+        
+        // CORREÇÃO: Converte Model -> Response usando o mapper de saída
+        return funcionarioDTOMapperResponse.apply(funcionarioSalvo);
     }
     //deletar
     public void delete(Long id){

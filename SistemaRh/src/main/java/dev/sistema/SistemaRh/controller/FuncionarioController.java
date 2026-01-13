@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import dev.sistema.SistemaRh.dto.request.FuncionarioRequest;
 import dev.sistema.SistemaRh.dto.response.FuncionarioResponse;
-import dev.sistema.SistemaRh.model.FuncionarioModel;
 import dev.sistema.SistemaRh.service.FuncionarioService;
 import jakarta.validation.Valid;
 
@@ -34,8 +34,8 @@ public class FuncionarioController {
     }
     
     @PostMapping    
-    public FuncionarioModel save(@RequestBody @Valid FuncionarioModel funcionarioModel){
-        return funcionarioService.save(funcionarioModel);
+    public FuncionarioResponse save(@RequestBody @Valid FuncionarioRequest funcionarioRequest){
+        return funcionarioService.save(funcionarioRequest);
     }
 
     @DeleteMapping("/{id}")
