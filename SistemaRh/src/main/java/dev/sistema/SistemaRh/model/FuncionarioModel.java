@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 
 @Entity
@@ -36,8 +37,10 @@ public class FuncionarioModel {
     private String email;
 
     @NotBlank
+    @Pattern(regexp = "\\(\\d{2}\\) 9\\d{4}-\\d{4}", message = "O telefone deve seguir o formato (XX) 9XXXX-XXXX")
     private String telefonePrimario;
 
+    @Pattern(regexp = "(\\(\\d{2}\\) 9\\d{4}-\\d{4})?", message = "O telefone secundário deve seguir o formato (XX) 9XXXX-XXXX")
     private String telefoneSegundario;
 
     @NotBlank
