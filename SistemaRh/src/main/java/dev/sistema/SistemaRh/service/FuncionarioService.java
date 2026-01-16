@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import dev.sistema.SistemaRh.controller.exception.ResourceNotFoundException;
 import dev.sistema.SistemaRh.dto.mapper.FuncionarioDTOMapperRequest;
 import dev.sistema.SistemaRh.dto.mapper.FuncionarioDTOMapperResponse;
 import dev.sistema.SistemaRh.dto.request.FuncionarioRequest;
@@ -45,6 +46,9 @@ public class FuncionarioService {
     }
     //deletar
     public void delete(Long id){
+        if (!funcionarioRepository.existsById(id)) {
+            throw new ResourceNotFoundException(id);
+        }
         funcionarioRepository.deleteById(id);
     }
     //editar
