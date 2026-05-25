@@ -1,144 +1,62 @@
 package dev.sistema.SistemaRh.model;
 
-import org.hibernate.validator.constraints.br.CPF;
-
 import dev.sistema.SistemaRh.model.enums.HierarchicalLevel;
 import dev.sistema.SistemaRh.model.enums.StatusFuncionario;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
-
+/**
+ * Entidade que representa um Funcionário no sistema de RH.
+ */
 @Entity
 @Table(name = "funcionarios")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class FuncionarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "O nome do funcionário é obrigatório")
+    @Column(nullable = false)
     private String nomeFuncionario;
-    
-    @NotBlank
-    @CPF
+
+    @NotBlank(message = "O CPF é obrigatório")
+    @CPF(message = "CPF inválido")
+    @Column(nullable = false, unique = true)
     private String cpf;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "O e-mail é obrigatório")
+    @Email(message = "E-mail inválido")
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "O telefone primário é obrigatório")
     @Pattern(regexp = "\\(\\d{2}\\) 9\\d{4}-\\d{4}", message = "O telefone deve seguir o formato (XX) 9XXXX-XXXX")
     private String telefonePrimario;
 
     @Pattern(regexp = "(\\(\\d{2}\\) 9\\d{4}-\\d{4})?", message = "O telefone secundário deve seguir o formato (XX) 9XXXX-XXXX")
     private String telefoneSegundario;
 
-    @NotBlank
+    @NotBlank(message = "O cargo é obrigatório")
     private String cargo;
-    @NotNull
+
+    @NotNull(message = "O nível hierárquico é obrigatório")
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private HierarchicalLevel nivelHierarquico;
-    @NotNull
+
+    @NotNull(message = "O status do funcionário é obrigatório")
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private StatusFuncionario statusFuncionario;
-
-    public FuncionarioModel() {
-    }
-
-
-    public FuncionarioModel(Long id, String nomeFuncionario, String cpf, String email, String telefonePrimario, String telefoneSegundario, String cargo, HierarchicalLevel nivelHierarquico, StatusFuncionario statusFuncionario) {
-        this.id = id;
-        this.nomeFuncionario = nomeFuncionario;
-        this.cpf = cpf;
-        this.email = email;
-        this.telefonePrimario = telefonePrimario;
-        this.telefoneSegundario = telefoneSegundario;
-        this.cargo = cargo;
-        this.nivelHierarquico = nivelHierarquico;
-        this.statusFuncionario = statusFuncionario;
-    }
-
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNomeFuncionario() {
-        return this.nomeFuncionario;
-    }
-
-    public void setNomeFuncionario(String nomeFuncionario) {
-        this.nomeFuncionario = nomeFuncionario;
-    }
-
-    public String getCpf() {
-        return this.cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelefonePrimario() {
-        return this.telefonePrimario;
-    }
-
-    public void setTelefonePrimario(String telefonePrimario) {
-        this.telefonePrimario = telefonePrimario;
-    }
-
-    public String getTelefoneSegundario() {
-        return this.telefoneSegundario;
-    }
-
-    public void setTelefoneSegundario(String telefoneSegundario) {
-        this.telefoneSegundario = telefoneSegundario;
-    }
-
-    public String getCargo() {
-        return this.cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
-    public HierarchicalLevel getNivelHierarquico() {
-        return this.nivelHierarquico;
-    }
-
-    public void setNivelHierarquico(HierarchicalLevel nivelHierarquico) {
-        this.nivelHierarquico = nivelHierarquico;
-    }
-
-    public StatusFuncionario getStatusFuncionario() {
-        return this.statusFuncionario;
-    }
-
-    public void setStatusFuncionario(StatusFuncionario statusFuncionario) {
-        this.statusFuncionario = statusFuncionario;
-    }
-
 }

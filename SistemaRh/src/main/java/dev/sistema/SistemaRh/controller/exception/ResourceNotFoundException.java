@@ -1,8 +1,11 @@
 package dev.sistema.SistemaRh.controller.exception;
 
-public class ResourceNotFoundException extends RuntimeException{
+/**
+ * Exceção lançada quando um recurso não é encontrado pelo ID fornecido.
+ */
+public class ResourceNotFoundException extends RuntimeException {
 
-    public ResourceNotFoundException(Object id){
-        super("Recurso não encontrado. ID: " + id);
+    public ResourceNotFoundException(Long id) {
+        super("Recurso não encontrado com id: " + id);
     }
 }

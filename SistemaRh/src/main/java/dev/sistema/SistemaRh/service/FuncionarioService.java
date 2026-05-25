@@ -1,57 +1,97 @@
 package dev.sistema.SistemaRh.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import dev.sistema.SistemaRh.controller.exception.ResourceNotFoundException;
-import dev.sistema.SistemaRh.dto.mapper.FuncionarioDTOMapperRequest;
-import dev.sistema.SistemaRh.dto.mapper.FuncionarioDTOMapperResponse;
+import dev.sistema.SistemaRh.dto.mapper.FuncionarioMapper;
 import dev.sistema.SistemaRh.dto.request.FuncionarioRequest;
 import dev.sistema.SistemaRh.dto.response.FuncionarioResponse;
 import dev.sistema.SistemaRh.model.FuncionarioModel;
 import dev.sistema.SistemaRh.repository.FuncionarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Serviço responsável pela lógica de negócio relacionada a Funcionários.
+ */
 @Service
+@RequiredArgsConstructor
 public class FuncionarioService {
-    
-    
+
     private final FuncionarioRepository funcionarioRepository;
-    private final FuncionarioDTOMapperResponse funcionarioDTOMapperResponse;
-    private final FuncionarioDTOMapperRequest funcionarioDTOMapperRequest;
+    private final FuncionarioMapper funcionarioMapper;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, FuncionarioDTOMapperResponse funcionarioDTOMapperResponse, FuncionarioDTOMapperRequest funcionarioDTOMapperRequest) {
-        this.funcionarioRepository = funcionarioRepository;
-        this.funcionarioDTOMapperResponse = funcionarioDTOMapperResponse;
-        this.funcionarioDTOMapperRequest = funcionarioDTOMapperRequest;
+    /**
+     * Retorna todos os funcionários paginados.
+     *
+     * @param pageable configuração de paginação e ordenação
+     * @return página de FuncionarioResponse
+     */
+    @Transactional(readOnly = true)
+    public Page<FuncionarioResponse> getAll(Pageable pageable) {
+        return funcionarioRepository.findAll(pageable)
+                .map(funcionarioMapper::toResponse);
     }
 
-    //listar
-    public List<FuncionarioResponse> getAll() {
-        return funcionarioRepository.findAll()
-            .stream()
-            .map(funcionarioDTOMapperResponse::apply)
-            .toList();
+    /**
+     * Busca um funcionário por ID.
+     *
+     * @param id identificador do funcionário
+     * @return FuncionarioResponse com os dados
+     * @throws ResourceNotFoundException se não encontrado
+     */
+    @Transactional(readOnly = true)
+    public FuncionarioResponse findById(Long id) {
+        FuncionarioModel funcionario = findOrThrow(id);
+        return funcionarioMapper.toResponse(funcionario);
     }
-    //criar
-    public FuncionarioResponse save(FuncionarioRequest funcionarioRequest){
-        // Converte Request -> Model
-        FuncionarioModel funcionarioParaSalvar = funcionarioDTOMapperRequest.apply(funcionarioRequest);
-        
-        // Salva no banco (retorna um Model com ID)
-        FuncionarioModel funcionarioSalvo = funcionarioRepository.save(funcionarioParaSalvar);
-        
-        //Converte Model -> Response usando o mapper de saída
-        return funcionarioDTOMapperResponse.apply(funcionarioSalvo);
+
+    /**
+     * Cadastra um novo funcionário.
+     *
+     * @param request dados do novo funcionário
+     * @return FuncionarioResponse com os dados salvos
+     */
+    @Transactional
+    public FuncionarioResponse save(FuncionarioRequest request) {
+        FuncionarioModel model = funcionarioMapper.toModel(request);
+        FuncionarioModel saved = funcionarioRepository.save(model);
+        return funcionarioMapper.toResponse(saved);
     }
-    //deletar
-    public void delete(Long id){
-        if (!funcionarioRepository.existsById(id)) {
-            throw new ResourceNotFoundException(id);
-        }
+
+    /**
+     * Atualiza todos os dados de um funcionário existente (substituição completa).
+     *
+     * @param id      identificador do funcionário
+     * @param request novos dados
+     * @return FuncionarioResponse atualizado
+     * @throws ResourceNotFoundException se não encontrado
+     */
+    @Transactional
+    public FuncionarioResponse update(Long id, FuncionarioRequest request) {
+        FuncionarioModel existente = findOrThrow(id);
+        funcionarioMapper.updateModelFromRequest(request, existente);
+        FuncionarioModel atualizado = funcionarioRepository.save(existente);
+        return funcionarioMapper.toResponse(atualizado);
+    }
+
+    /**
+     * Remove um funcionário pelo ID.
+     *
+     * @param id identificador do funcionário
+     * @throws ResourceNotFoundException se não encontrado
+     */
+    @Transactional
+    public void delete(Long id) {
+        findOrThrow(id); // garante que existe antes de deletar
         funcionarioRepository.deleteById(id);
     }
-    //editar
-    //to-do
 
+    // ─── Helpers ─────────────────────────────────────────────────────────────
+
+    private FuncionarioModel findOrThrow(Long id) {
+        return funcionarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
 }
